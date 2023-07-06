@@ -13,7 +13,7 @@
             <a class="button is-primary is-light">
               <strong>$ {{ productItem.price }}</strong>
             </a>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" @click="detailProduct(productItem.id)">
               View detail
             </button>
           </div>
@@ -25,6 +25,7 @@
 <script>
 import { mapActions } from 'vuex';
 // import StarRating from '../../utils/StarRating.vue';
+import router from '../../router';
 
 export default {
   components: {
@@ -34,6 +35,10 @@ export default {
   props: ["productItem"],
   methods: {
     ...mapActions(["addCartItem"]),
+    detailProduct(id) {
+      router.push('/product/'+id);
+    }
   },
+
 };
 </script>

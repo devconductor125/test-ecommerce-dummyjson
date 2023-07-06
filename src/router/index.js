@@ -6,6 +6,7 @@ import HomePage from '../components/page/Home_Page.vue';
 import RegisterPage from '../components/auth/Register_page.vue';
 import NotFound from '../components/page/NotFound.vue';
 import ProfilePage from '../components/page/Profile.vue';
+import ProductDetail from '../components/page/ProductDetail.vue';
 import store from '../store';
 
 const routes = [
@@ -15,6 +16,14 @@ const routes = [
   },
   {
     path: '/products',
+    component: ProductList
+  },
+  {
+    path: '/product/:id?',
+    component: ProductDetail
+  },
+  {
+    path: '/products/:category?',
     component: ProductList
   },
   {

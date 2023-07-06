@@ -5,7 +5,7 @@
         <ul class="nav flex-column nav-pills nav-pills-dark ">
           <!-- nav item -->
           <li class="nav-item mx-3" v-for="category in productCategories" :key="category">
-            <router-link class="nav-link" aria-current="page" :to="'/products/' + category"><i
+            <router-link class="nav-link" aria-current="page" :to="'/products/' + category" @click="updateCategory(category)"><i
                 class="feather-icon icon-shopping-bag me-2"></i>{{ capitalized(category) }}</router-link>
           </li>
           <!-- nav item -->
@@ -38,7 +38,8 @@ export default {
     ])
   },
   created() {
-    this.$store.dispatch('getProductItems');
+    if(!this.$route.params.category)this.$store.dispatch('getProductItems');
+    else this.$store.dispatch('getCategoryProducts', {catid: this.$route.params.category});
     this.$store.dispatch('getAllCategories');
   },
   methods: {
@@ -47,6 +48,9 @@ export default {
       const rest = name.slice(1);
       return capitalizedFirst + rest;
     },
+    updateCategory(catid) {
+      this.$store.dispatch('getCategoryProducts', {catid});
+    }
   },
 };
 </script>
