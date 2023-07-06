@@ -1,13 +1,12 @@
 <template>
-    <div class="container center w-75 my-5 ">
+    <div class="container center w-75 my-5 " style="max-width: 800px;">
         <div class="form-outline mb-4">
-            <input type="text" id="form2Example1" class="form-control" :value="email"
-                @input="$emit('update:email', $event.target.value)" />
+            <input type="text" id="form2Example1" class="form-control" v-model="email" />
             <label class="form-label" for="form2Example1">Your name</label>
         </div>
 
         <div class="form-outline mb-4">
-            <input type="password" id="form2Example2" class="form-control" :value="password" @input="$emit('update:password', $event.target.value)" />
+            <input type="password" id="form2Example2" class="form-control" v-model="password" />
             <label class="form-label" for="form2Example2">Password</label>
         </div>
 
@@ -53,24 +52,19 @@
 import { mapActions } from "vuex";
 
 export default {
-    props: {
-        email: {
-            type: String,
-            default: "kminchelle",
-        },
-        password: {
-            type: String,
-            default: '0lelplR'
+    name: "LoginPage",
+    data() {
+        return {
+            email: 'kminchelle',
+            password: "0lelplR",
         }
     },
-    name: "LoginPage",
-    
     methods: {
         ...mapActions([
             'userLogin'
         ]),
         loginUser() {
-            this.userLogin({username:this.email, password: this.password});
+            this.userLogin({ username: this.email, password: this.password });
         }
     }
 }

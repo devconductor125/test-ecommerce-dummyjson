@@ -1,5 +1,5 @@
 <template>
-  <div class="container center w-75 my-5 ">
+  <div class="container center w-75 my-5 " style="max-width: 800px;">
     <div class="form-outline mb-4">
       <input type="text" id="form2Example1" class="form-control" :value="uname"
         @input="$emit('update:uname', $event.target.value)" />

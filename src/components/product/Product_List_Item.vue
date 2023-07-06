@@ -1,36 +1,35 @@
 <template>
-    <div class="card">
-      <div class="card-content">
-        <div class="content">
-          <h4>{{ productItem.title }}</h4>
-          <a
-            class="button is-rounded is-pulled-left"
-            @click="addCartItem(productItem)"
-          >
-            <strong>Add to Cart</strong>
-          </a>
-          <br />
-          <p class="mt-4">
-            {{ productItem.description }}
-          </p>
-        </div>
+  <div class="card mb-3 rounded-3 p-sm-2 p-xl-3 product-one" style="height: 420px;">
+    <img :src='productItem.thumbnail' class="card-img-top shadow rounded-3" alt="..."
+      style="object-fit: cover; max-height: 220px; min-height: 220px;">
+    <div class="card-body">
+      <h5 class="card-title product-title">{{ productItem.title }}</h5>
+      <div class="card-content d-flex flex-column justify-content-between" style="max-height: 120px; min-height: 120px;">
+        <p class='product-description'>
+          {{ productItem.description }}
+        </p>
         <div class="media">
-          <div class="media-content">
-            <p class="title is-6">{{ productItem.owner }}</p>
-            <p class="subtitle is-7">{{ productItem.email }}</p>
-          </div>
-          <div class="media-right">
+          <div class="media-right d-flex justify-content-between">
             <a class="button is-primary is-light">
               <strong>$ {{ productItem.price }}</strong>
             </a>
+            <button class="btn btn-primary">
+              View detail
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex';
+// import StarRating from '../../utils/StarRating.vue';
+
 export default {
+  components: {
+    // StarRating: StarRating
+  },
   name: "ProductListItem",
   props: ["productItem"],
   methods: {

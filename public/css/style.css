@@ -994,3 +994,29 @@ textarea {
   align-items: center;
   position: absolute;
 }
+.product-one img{
+  cursor: pointer;
+}
+.product-one:hover {
+  border: 1px solid #0aad0a;
+}
+.nav-pills-dark .nav-item .nav-link:hover {
+  background-color: #639e87;
+  color: #001e2b;
+}
+.product-one .product-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; 
+  white-space: pre-wrap;
+}
+.product-one .product-title {
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  overflow: hidden;
+}
+.category-list {
+  /* box-shadow: 3px 2px 5px */
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}

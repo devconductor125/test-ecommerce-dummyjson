@@ -4,7 +4,7 @@
 			<div class="container relative">
 
 				<div class="sofa-img sm-d-none">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
+					<!-- <img src="images/sofa.png" alt="Image" class="img-fluid"> -->
 				</div>
 
 				<div class="row">

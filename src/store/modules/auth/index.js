@@ -11,7 +11,7 @@ const mutations = {
 		state.authorized = true;
 		state.user = payload;
 	},
-	USER_LOGOUT (state, payload) {
+	USER_LOGOUT(state, payload) {
 		state.authorized = false;
 		state.user = payload;
 	}
@@ -20,19 +20,24 @@ const mutations = {
 const actions = {
 	async userLogin({ commit }, data) {
 		data.expiresInMins = 43200;
-		await axios.post(`https://dummyjson.com/auth/login`, data).then((response) => {
-			commit('USER_AUTHORIZATION', response.data);
-			if(response.status == 200) {
-				localStorage.setItem('user', JSON.stringify(response.data));
-				router.push("/profile");
-			}
-		});
+		try {
+			await axios.post(`https://dummyjson.com/auth/login`, data).then((response) => {
+				if (response.status == 200) {
+					commit('USER_AUTHORIZATION', response.data);
+					localStorage.setItem('user', JSON.stringify(response.data));
+					router.push("/profile");
+				}
+			});
+		} catch (e) {
+			console.log(e.response.data.message)
+		}
+
 	},
-	getCurrentUser({commit}) {
+	getCurrentUser({ commit }) {
 		const currentUser = JSON.parse(localStorage.getItem('user'));
-		if(currentUser) commit('USER_AUTHORIZATION', currentUser);
+		if (currentUser) commit('USER_AUTHORIZATION', currentUser);
 	},
-	logout({commit}) {
+	logout({ commit }) {
 		localStorage.removeItem('user');
 		commit('USER_LOGOUT', {});
 		router.push("/");

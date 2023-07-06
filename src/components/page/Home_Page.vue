@@ -1,7 +1,5 @@
 <template>
-    <div style="height: 500px;">
-        This is home page
-    </div>
+   <div>This is homepage</div>
 </template>
 <script>
 export default {
