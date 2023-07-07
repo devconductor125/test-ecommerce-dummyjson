@@ -1,15 +1,19 @@
 <template>
 	<div class="container center w-75 my-5" style="max-width: 800px">
 		<div class="form-outline mb-4">
-			<input type="text" id="form2Example1" class="form-control" v-model="email" />
 			<label class="form-label" for="form2Example1">Your name</label>
+
+			<input type="text" id="form2Example1" class="form-control" v-model="email" />
+			<span class="text-danger" v-if="nameInvalid != ''">{{ nameInvalid }}</span>
 		</div>
 
 		<div class="form-outline mb-4">
-			<input type="password" id="form2Example2" class="form-control" v-model="password" />
 			<label class="form-label" for="form2Example2">Password</label>
-		</div>
 
+			<input type="password" id="form2Example2" class="form-control" v-model="password" />
+			<span class="text-danger" v-if="pwdInvalid != ''">{{ pwdInvalid }}</span>
+		</div>
+		<span class="text-danger" v-if="loginIssue != ''">{{ loginIssue }}</span>
 		<div class="row mb-4">
 			<div class="col d-flex justify-content-end">
 				<div class="form-check">
@@ -57,12 +61,29 @@
 			return {
 				email: "kminchelle",
 				password: "0lelplR",
+				loginIssue: "",
+				nameInvalid: "",
+				pwdInvalid: "",
 			};
 		},
 		methods: {
 			...mapActions(["userLogin"]),
 			loginUser() {
-				this.userLogin({ username: this.email, password: this.password });
+				if (!this.email) this.nameInvalid = "Name required";
+				else {
+					this.nameInvalid = "";
+				}
+
+				if (!this.password) this.pwdInvalid = "Password required";
+				else this.pwdInvalid = "";
+
+				this.loginIssue = "";
+
+				if (!this.nameInvalid && !this.pwdInvalid) {
+					this.userLogin({ username: this.email, password: this.password }).then((message) => {
+						this.loginIssue = message;
+					});
+				}
 			},
 		},
 	};

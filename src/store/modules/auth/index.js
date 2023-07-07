@@ -29,7 +29,7 @@ const actions = {
 				}
 			});
 		} catch (e) {
-			console.log(e.response.data.message);
+			return e.response.data.message;
 		}
 	},
 	getCurrentUser({ commit }) {
@@ -40,6 +40,9 @@ const actions = {
 		localStorage.removeItem("user");
 		commit("USER_LOGOUT", {});
 		router.push("/");
+	},
+	registerUser({ commit }, data) {
+		console.log(commit, data);
 	},
 };
 

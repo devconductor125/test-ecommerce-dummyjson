@@ -41,41 +41,43 @@ const mutations = {
 		}
 	},
 	ADD_CART_ITEM(state, payload) {
-		var productIndex = state.cartItems[0]?.products.findIndex((p) => p.id == payload.id);
+		var productIndex = state.cartItems[0]?.products.findIndex((p) => p.id == payload?.productId?.id);
 		if (productIndex >= 0) {
 			const newCart = state.cartItems[0]?.products[productIndex];
-			newCart.quantity++;
-			newCart.total += payload.price;
-			newCart.discountedPrice += (payload.price * (100 - payload.discountPercentage)) / 100;
+			newCart.quantity += payload.quantity;
+			newCart.total += payload.quantity * payload?.productId?.price;
+			newCart.discountedPrice += (payload.quantity * (payload?.productId?.price * (100 - payload?.productId?.discountPercentage))) / 100;
 			state.cartItems[0].products[productIndex] = newCart;
 		} else {
 			state.cartItems[0].products.push({
-				id: payload.id,
-				title: payload.title,
-				price: payload.price,
-				quantity: 1,
-				total: payload.price,
-				discountPercentage: payload.discountPercentage,
-				discountedPrice: (payload.price * (100 - payload.discountPercentage)) / 100,
-				image: payload.thumbnail,
+				id: payload?.productId?.id,
+				title: payload?.productId?.title,
+				price: payload?.productId?.price,
+				quantity: payload.quantity,
+				total: payload.quantity * payload?.productId?.price,
+				discountPercentage: payload?.productId?.discountPercentage,
+				discountedPrice: (payload.quantity * (payload?.productId?.price * (100 - payload?.productId?.discountPercentage))) / 100,
+				image: payload?.productId?.thumbnail,
 			});
 			state.cartItems[0].totalProducts++;
 		}
-		state.cartItems[0].totalQuantity++;
-		state.cartItems[0].total += payload.price;
-		state.cartItems[0].discountedTotal += (payload.price * (100 - payload.discountPercentage)) / 100;
+		state.cartItems[0].totalQuantity += payload.quantity;
+		state.cartItems[0].total += payload.quantity * payload?.productId?.price;
+		state.cartItems[0].discountedTotal += (payload.quantity * (payload?.productId?.price * (100 - payload?.productId?.discountPercentage))) / 100;
 	},
 };
 
 const actions = {
 	getCartItems({ commit }) {
 		const currentUser = JSON.parse(localStorage.getItem("user"));
-		axios.get(`https://dummyjson.com/carts/user/${currentUser.id}`).then((response) => {
-			commit("UPDATE_CART_ITEMS", response.data.carts);
-		});
+		if (currentUser) {
+			axios.get(`https://dummyjson.com/carts/user/${currentUser?.id}`).then((response) => {
+				commit("UPDATE_CART_ITEMS", response.data.carts);
+			});
+		}
 	},
-	addCartItem({ commit }, cartItem) {
-		commit("ADD_CART_ITEM", cartItem);
+	addCartItem({ commit }, data) {
+		commit("ADD_CART_ITEM", data);
 	},
 	removeCartItem({ commit }, cartItem) {
 		axios.delete("https://dummyjson.com/cart/delete", cartItem).then((response) => {

@@ -27,7 +27,10 @@
 					<h4 class="my-3">
 						<span class="text-success">Now ${{ (((100 - productById?.discountPercentage) * productById?.price) / 100).toFixed(2) }}</span>
 					</h4>
-					<button type="button" class="btn btn-outline-primary btn-lg btn-block btn-custom-color" @click="addToCart">ADD TO CART</button>
+					<div>
+						<input type="number" v-model="quantity" style="width: 70px; height: 45px; font-size: 16px" class="mx-3" />
+						<button type="button" class="btn btn-outline-primary btn-lg btn-block btn-custom-color rounded" @click="addToCart">ADD TO CART</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -44,6 +47,7 @@
 				cart: 0,
 				stockAvailability: true,
 				activeClass: 0,
+				quantity: 1,
 			};
 		},
 		components: {},
@@ -53,7 +57,7 @@
 		methods: {
 			addToCart: function () {
 				this.cart = this.cart + 1;
-				this.$store.dispatch("addCartItem", this.productById);
+				this.$store.dispatch("addCartItem", { productId: this.productById, quantity: this.quantity });
 			},
 			currentThumnail: function (image, index) {
 				this.productById.thumbnail = image;
