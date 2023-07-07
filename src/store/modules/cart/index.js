@@ -71,7 +71,7 @@ const actions = {
 	getCartItems({ commit }) {
 		const currentUser = JSON.parse(localStorage.getItem("user"));
 		if (currentUser) {
-			axios.get(`https://dummyjson.com/carts/user/${currentUser?.id}`).then((response) => {
+			axios.get(`https://dummyjson.com/carts/user/${currentUser.id}`).then((response) => {
 				commit("UPDATE_CART_ITEMS", response.data.carts);
 			});
 		}
