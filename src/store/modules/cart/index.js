@@ -1,52 +1,110 @@
-import axios from 'axios';
+import axios from "axios";
+
 const state = {
-  cartItems: []
-}
+	cartItems: [],
+};
 
 const mutations = {
-  UPDATE_CART_ITEMS (state, payload) {
-    state.cartItems = payload;
-  }
-}
+	UPDATE_CART_ITEMS(state, payload) {
+		state.cartItems = payload;
+	},
+	REMOVE_CART_PRODUCT(state, payload) {
+		var productIndex = state.cartItems[0]?.products.findIndex((p) => p.id == payload);
+		state.cartItems[0].totalQuantity -= state.cartItems[0]?.products[productIndex].quantity;
+		state.cartItems[0].total -= state.cartItems[0]?.products[productIndex].total;
+		state.cartItems[0].totalProducts--;
+		state.cartItems[0].discountedTotal -= state.cartItems[0]?.products[productIndex]?.discountedPrice;
+
+		state.cartItems[0]?.products.splice(productIndex, 1);
+	},
+	UPDATE_CART_PRODUCT(state, payload) {
+		var productIndex = state.cartItems[0]?.products.findIndex((p) => p.id == payload.productId);
+		if (payload.dir == "incre") {
+			const newCart = state.cartItems[0]?.products[productIndex];
+			newCart.quantity++;
+			newCart.total += state.cartItems[0]?.products[productIndex].price;
+			newCart.discountedPrice += (payload.price * (100 - state.cartItems[0]?.products[productIndex]?.discountPercentage)) / 100;
+			state.cartItems[0].products[productIndex] = newCart;
+			state.cartItems[0].totalQuantity++;
+			state.cartItems[0].total += state.cartItems[0]?.products[productIndex].price;
+			state.cartItems[0].discountedTotal += (state.cartItems[0]?.products[productIndex].price * (100 - state.cartItems[0]?.products[productIndex].discountPercentage)) / 100;
+		} else {
+			const newCart = state.cartItems[0]?.products[productIndex];
+			if (newCart.quantity < 2) return false;
+			newCart.quantity--;
+			newCart.total -= state.cartItems[0]?.products[productIndex].price;
+			newCart.discountedPrice -= (payload.price * (100 - state.cartItems[0]?.products[productIndex]?.discountPercentage)) / 100;
+			state.cartItems[0].products[productIndex] = newCart;
+			state.cartItems[0].totalQuantity--;
+			state.cartItems[0].total -= state.cartItems[0]?.products[productIndex].price;
+			state.cartItems[0].discountedTotal -= (state.cartItems[0]?.products[productIndex].price * (100 - state.cartItems[0]?.products[productIndex].discountPercentage)) / 100;
+		}
+	},
+	ADD_CART_ITEM(state, payload) {
+		var productIndex = state.cartItems[0]?.products.findIndex((p) => p.id == payload.id);
+		if (productIndex >= 0) {
+			const newCart = state.cartItems[0]?.products[productIndex];
+			newCart.quantity++;
+			newCart.total += payload.price;
+			newCart.discountedPrice += (payload.price * (100 - payload.discountPercentage)) / 100;
+			state.cartItems[0].products[productIndex] = newCart;
+		} else {
+			state.cartItems[0].products.push({
+				id: payload.id,
+				title: payload.title,
+				price: payload.price,
+				quantity: 1,
+				total: payload.price,
+				discountPercentage: payload.discountPercentage,
+				discountedPrice: (payload.price * (100 - payload.discountPercentage)) / 100,
+				image: payload.thumbnail,
+			});
+			state.cartItems[0].totalProducts++;
+		}
+		state.cartItems[0].totalQuantity++;
+		state.cartItems[0].total += payload.price;
+		state.cartItems[0].discountedTotal += (payload.price * (100 - payload.discountPercentage)) / 100;
+	},
+};
 
 const actions = {
-  getCartItems ({ commit }) {
-    axios.get('https://dummyjson.com/carts').then((response) => {
-
-      commit('UPDATE_CART_ITEMS', response.data)
-    });
-  },
-  addCartItem ({ commit }, cartItem) {
-    axios.post('https://dummyjson.com/cart', cartItem).then((response) => {
-      commit('UPDATE_CART_ITEMS', response.data)
-    });
-  },
-  removeCartItem ({ commit }, cartItem) {
-    axios.delete('https://dummyjson.com/cart/delete', cartItem).then((response) => {
-      commit('UPDATE_CART_ITEMS', response.data)
-    });
-  },
-  removeAllCartItems ({ commit }) {
-    axios.delete('https://dummyjson.com/cart/delete/all').then((response) => {
-      commit('UPDATE_CART_ITEMS', response.data)
-    });
-  }
-}
+	getCartItems({ commit }) {
+		const currentUser = JSON.parse(localStorage.getItem("user"));
+		axios.get(`https://dummyjson.com/carts/user/${currentUser.id}`).then((response) => {
+			commit("UPDATE_CART_ITEMS", response.data.carts);
+		});
+	},
+	addCartItem({ commit }, cartItem) {
+		commit("ADD_CART_ITEM", cartItem);
+	},
+	removeCartItem({ commit }, cartItem) {
+		axios.delete("https://dummyjson.com/cart/delete", cartItem).then((response) => {
+			commit("UPDATE_CART_ITEMS", response.data);
+		});
+	},
+	removeAllCartItems({ commit }) {
+		axios.delete("https://dummyjson.com/cart/delete/all").then((response) => {
+			commit("UPDATE_CART_ITEMS", response.data);
+		});
+	},
+	removeProduct({ commit }, productId) {
+		commit("REMOVE_CART_PRODUCT", productId);
+	},
+	updateProduct({ commit }, data) {
+		commit("UPDATE_CART_PRODUCT", data);
+	},
+};
 
 const getters = {
-  cartItems: state => state.cartItems,
-  cartTotal: state => {
-    return state.cartItems.reduce((acc, cartItem) => {
-      return (cartItem.quantity * cartItem.price) + acc;
-    }, 0).toFixed(2);
-  },
-  cartQuantity: state => state.cartItems.length,
-}
+	cartItems: (state) => state.cartItems[0]?.products,
+	cartTotal: (state) => state?.cartItems[0] ?? {},
+	cartQuantity: (state) => state.cartItems[0]?.totalQuantity,
+};
 
 const cartModule = {
-    state,
-    mutations,
-    actions,
-    getters
-  }
-  export default cartModule;
+	state,
+	mutations,
+	actions,
+	getters,
+};
+export default cartModule;

@@ -264,6 +264,9 @@ a.more {
   -o-transition: .3s all ease;
   transition: .3s all ease;
 }
+.product-thumbnail img {
+  max-width: 100px;
+}
 
 .product-section .product-item h3 {
   font-weight: 600;
@@ -930,7 +933,7 @@ textarea {
 }
 
 .site-blocks-table td {
-  padding: 20px;
+  padding: 5px;
   text-align: center;
   vertical-align: middle;
   color: rgba(0, 0, 0, 0.8);
@@ -978,9 +981,11 @@ textarea {
   border-radius: 50%;
   background: rgba(59, 93, 80, 0.2);
 }
-.badged-cart{
- position: relative;
+
+.badged-cart {
+  position: relative;
 }
+
 .badged-cart .cart-badge {
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
@@ -994,28 +999,34 @@ textarea {
   align-items: center;
   position: absolute;
 }
-.product-one img{
+
+.product-one img {
   cursor: pointer;
 }
+
 .product-one:hover {
   border: 1px solid #0aad0a;
 }
+
 .nav-pills-dark .nav-item .nav-link:hover {
   background-color: #639e87;
   color: #001e2b;
 }
+
 .product-one .product-description {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   white-space: pre-wrap;
 }
+
 .product-one .product-title {
-  text-overflow: ellipsis; 
-  white-space: nowrap; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
+
 .category-list {
   /* box-shadow: 3px 2px 5px */
   border-right: 1px solid rgba(0, 0, 0, 0.2);
@@ -1026,36 +1037,125 @@ textarea {
 .product-detail .container-space {
   margin-top: 2rem;
 }
+
 .product-detail .product-thumbnails {
   display: flex;
   margin-top: 2rem;
 }
-.product-detail .product-thumbnails > ul {
+
+.product-detail .product-thumbnails>ul {
   display: flex;
   list-style: none;
   padding-left: 0;
 }
-.product-detail .product-thumbnails > li {
+
+.product-detail .product-thumbnails>li {
   margin-right: 10px;
 }
-.product-detail .product-thumbnails > ul > li > img {
+
+.product-detail .product-thumbnails>ul>li>img {
   width: 100px;
   cursor: pointer;
 }
+
 .product-detail .thumbnail-active {
   border: 2px solid #000;
 }
-.product-detail .nav-link > img {
+
+.product-detail .nav-link>img {
   width: 40px;
   border-radius: 8px;
   margin-right: 10px;
 }
+
 .product-detail .btn-custom-color {
   border: 2px solid #4fc08d;
   color: #4fc08d;
 }
+
 .product-detail .btn-custom-color:hover {
   border: 2px solid #4fc08d;
   background-color: #4fc08d;
   color: #ffffff;
+}
+
+
+/* Home page  */
+.testimonials-container {
+  padding: 0 40px;
+  margin: 30px 0 70px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonials {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: space-evenly;
+}
+
+.testimonials-container h2 {
+  padding: 10px 10px 15px;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto 30px;
+}
+
+.testimonial {
+  width: 25%;
+  border-radius: 20px;
+  background: linear-gradient(to right bottom, #fabf8f60, #ffc0a660, #ffc4bc60, #ffcbcf60, #f7d3dd60);
+  padding: 20px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.testimonial:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -15px;
+  right: 50px;
+  width: 0;
+  border-width: 15px 20px 0;
+  border-style: solid;
+  border-color: #F7D3DD60 transparent;
+}
+
+.testimonial h3 {
+  margin-bottom: 10px;
+}
+
+.testimonial p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.testimonal-author {
+  font-size: 1rem;
+  position: absolute;
+  bottom: -60px;
+  right: 0;
+}
+
+@media all AND (max-width: 700px) {
+
+  .testimonials {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .testimonial {
+    width: 90%;
+    margin-bottom: 60px;
+  }
+
+}
+
+.testimonal-author .author {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 10px;
 }
