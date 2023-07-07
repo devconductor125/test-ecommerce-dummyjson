@@ -67,6 +67,7 @@
 <script>
 	import { mapGetters } from "vuex";
 	import Product_List_Item from "./Product_List_Item";
+
 	import router from "../../router";
 
 	export default {
